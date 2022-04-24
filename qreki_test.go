@@ -1,29 +1,25 @@
 package qreki
 
-import "testing"
+import (
+  "testing"
+  "reflect"
+  // "fmt"
+  "time"
+)
 
-func TestAdd(t *testing.T) {
-  type args struct {
-    a int
-    b int
+func TestQreki(t *testing.T) {
+  testcases := []struct {
+		in  string
+		out Qreki
+	}{
+    {"2015-12-31", Qreki{2015, 11, 21, false, "大安", 0.0, 0.0, 0.0, 0}},
   }
 
-  tests := []struct {
-    name string
-    args args
-    want int
-  }{
-    {
-      name: "normal",
-      args: args{a: 1, b: 2},
-      want: 3,
-    },
-  }
-  for _, tt := range tests {
-    t.Run(tt.name, func(t *testing.T) {
-      if got := Add(tt.args.a, tt.args.b); got != tt.want {
-        t.Errorf("add() = %v, want %v", got, tt.want)
-      }
-    })
-  }
+  for _, tc := range testcases {
+    in, _ := time.Parse("2006-01-02", tc.in)
+		got := NewQreki(in)
+		if !reflect.DeepEqual(got, tc.out) {
+			t.Errorf("%v: got %v, want %v", tc.in, got, tc.out)
+		}
+	}
 }
