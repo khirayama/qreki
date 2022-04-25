@@ -23,3 +23,23 @@ func TestQreki(t *testing.T) {
 		}
 	}
 }
+
+func TestToJulian(t *testing.T) {
+	type args struct {
+		t time.Time
+	}
+
+	testcases := []struct {
+		in  time.Time
+		out Julian
+	}{
+		{time.Date(2002, 6, 3, 0, 0, 0, 0, JST), Julian(2452428)},
+	}
+
+	for _, tc := range testcases {
+		got := ToJulian(tc.in)
+		if !reflect.DeepEqual(got, tc.out) {
+			t.Errorf("%v: got %v, want %v", tc.in, got, tc.out)
+		}
+	}
+}

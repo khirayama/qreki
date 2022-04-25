@@ -1,6 +1,30 @@
 package qreki
 
-import "time"
+import (
+	"time"
+)
+
+/* vars */
+// var JST
+
+/* utils */
+
+/* types */
+// type Rokuyo
+// type Qreki
+// func NewQreki
+
+/* funcs */
+// func ToJulian
+
+/***** vars *****/
+var JST, _ = time.LoadLocation("Asia/Tokyo")
+
+/***** utils *****/
+
+/***** types *****/
+
+type Julian float64
 
 // TODO Enumにする？
 type Rokuyo string
@@ -30,4 +54,10 @@ func NewQreki(t time.Time) Qreki {
 		Mphase:   0,
 	}
 	return qreki
+}
+
+/***** funcs *****/
+func ToJulian(t time.Time) Julian {
+	tz := -540.0 / 1440.0
+	return Julian(2440587.0 + float64(t.UnixMilli())/864e5 - tz)
 }
