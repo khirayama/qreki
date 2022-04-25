@@ -14,3 +14,5 @@ Go言語、Go言語のテスト、Go言語のモジュール作成を学習す�
 - [shogo82148/go-qreki: 旧暦を計算する](https://github.com/shogo82148/go-qreki)
 - [ソフト工作室](http://kikuchisan.net/wsp/java/java59.html)
 - [japanese-calendar/qreki.js at master nasano/japanese-calendar](https://github.com/nasano/japanese-calendar/blob/master/scripts/qreki.js)
+- [朔 - Wikipedia](https://ja.wikipedia.org/wiki/%E6%9C%94)
+- [朔とは - コトバンク](https://kotobank.jp/word/%E6%9C%94-68673)
