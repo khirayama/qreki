@@ -58,6 +58,7 @@ func NewQreki(julian Julian) Qreki {
 
 /***** funcs *****/
 func ToJulian(t time.Time) Julian {
-	tz := -540.0 / 1440.0
-	return Julian(2440587.0 + float64(t.UnixMilli())/864e5 - tz)
+	timezoneOffsetOfJapan := -540.0
+	minutesOf24hours := 1440.0
+	return Julian(2440587.0 + float64(t.UnixMilli())/864e5 - (timezoneOffsetOfJapan / minutesOf24hours))
 }
