@@ -41,7 +41,7 @@ type Qreki struct {
 	Mphase   int
 }
 
-func NewQreki(t time.Time) Qreki {
+func NewQreki(julian Julian) Qreki {
 	qreki := Qreki{
 		Year:     2015,
 		Month:    11,
