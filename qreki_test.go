@@ -39,3 +39,19 @@ func TestToJulian(t *testing.T) {
 		}
 	}
 }
+
+func TestNormalizeAngle(t *testing.T) {
+	testcases := []struct {
+		in  float64
+		out float64
+	}{
+		{31557.0*2451545.0 + 161.0, 86.0},
+	}
+
+	for _, tc := range testcases {
+		got := NormalizeAngle(tc.in)
+		if !reflect.DeepEqual(got, tc.out) {
+			t.Errorf("%v: got %v, want %v", tc.in, got, tc.out)
+		}
+	}
+}

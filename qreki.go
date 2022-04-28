@@ -17,6 +17,7 @@ import (
 
 /* funcs */
 // func ToJulian
+// func NormalizeAngle
 
 /***** vars *****/
 var JST, _ = time.LoadLocation("Asia/Tokyo")
@@ -61,4 +62,8 @@ func NewQreki(julian Julian) Qreki {
 /***** funcs *****/
 func ToJulian(t time.Time) Julian {
 	return Julian(2440587.0 + float64(t.UnixMilli())/864e5 - tz)
+}
+
+func NormalizeAngle(angle float64) float64 {
+	return angle - 360.0*float64(int(angle/360.0))
 }
