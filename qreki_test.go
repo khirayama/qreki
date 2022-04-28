@@ -57,3 +57,20 @@ func TestNormalizeAngle(t *testing.T) {
 		}
 	}
 }
+
+func TestCalcSolarLongitude(t *testing.T) {
+	testcases := []struct {
+		in  Julian
+		out float64
+	}{
+		{2452428.0, 109.95403992318643},
+		// {2452428.0, 109.95403992318825},
+	}
+
+	for _, tc := range testcases {
+		got := CalcSolarLongitude(tc.in)
+		if !reflect.DeepEqual(got, tc.out) {
+			t.Errorf("%v: got %v, want %v", tc.in, got, tc.out)
+		}
+	}
+}
