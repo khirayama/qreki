@@ -25,10 +25,6 @@ func TestQreki(t *testing.T) {
 }
 
 func TestToJulian(t *testing.T) {
-	type args struct {
-		t time.Time
-	}
-
 	testcases := []struct {
 		in  time.Time
 		out Julian
