@@ -65,5 +65,5 @@ func ToJulian(t time.Time) Julian {
 }
 
 func NormalizeAngle(angle float64) float64 {
-	return angle - 360.0*float64(int(angle/360.0))
+	return angle - 360.0*math.Floor(angle/360.0)
 }
