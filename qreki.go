@@ -69,22 +69,26 @@ func ToJulian(t time.Time) Julian {
 	return Julian(2440587.0 + float64(t.UnixMilli())/864e5 - tz)
 }
 
-func CalcEclipticLongitude(sl float64, longitude float64) float64 {
+func calcEclipticLongitude(sl float64, longitude float64) float64 {
 	return longitude * math.Floor(sl/longitude)
 }
 
-func CalcChuki(julian Julian, longitude float64) Julian {
-	j1 := math.Floor(float64(julian))
-	j2 := float64(julian) - float64(j1) + tz
-	j := (j2+0.5)/36525.0 + (j1-2451545.0)/36525.0
+func getNishiNibun(julian Julian) (float64, float64, float64) {
+	julianIntegerPart := math.Floor(float64(julian))
+	julianDecimalPart := float64(julian) - float64(julianIntegerPart) + tz
+	nnj := (julianDecimalPart+0.5)/36525.0 + (julianIntegerPart-2451545.0)/36525.0
+	return julianIntegerPart, julianDecimalPart, nnj
+}
 
-	sl := CalcSolarLongitude(Julian(j))
-	el := CalcEclipticLongitude(sl, longitude)
+func CalcChuki(julian Julian, longitude float64) Julian {
+	julianIntegerPart, julianDecimalPart, nnj := getNishiNibun(julian)
+	sl := CalcSolarLongitude(Julian(nnj))
+	el := calcEclipticLongitude(sl, longitude)
 
 	dt1 := 0.0
 	dt2 := 1.0
 	for math.Abs(dt1+dt2) > 1/86400.0 {
-		t := (j2+0.5)/36525.0 + (j1-2451545.0)/36525.0
+		t := (julianDecimalPart+0.5)/36525.0 + (julianIntegerPart-2451545.0)/36525.0
 		sl = CalcSolarLongitude(Julian(t))
 		ds := sl - el
 		if ds > 180.0 {
@@ -95,15 +99,15 @@ func CalcChuki(julian Julian, longitude float64) Julian {
 		dt1 = math.Floor(ds * 365.2 / 360.0)
 		dt2 = ds*365.2/360.0 - dt1
 
-		j1 = j1 - dt1
-		j2 = j2 - dt2
-		if j2 < 0.0 {
-			j1 -= 1.0
-			j2 += 1.0
+		julianIntegerPart = julianIntegerPart - dt1
+		julianDecimalPart = julianDecimalPart - dt2
+		if julianDecimalPart < 0.0 {
+			julianIntegerPart -= 1.0
+			julianDecimalPart += 1.0
 		}
 	}
 
-	return Julian(j2 + j1 - tz)
+	return Julian(julianDecimalPart + julianIntegerPart - tz)
 }
 
 func NormalizeAngle(angle float64) float64 {
