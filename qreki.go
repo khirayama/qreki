@@ -31,9 +31,6 @@ var tz = timezoneOffsetOfJapan / minutesOf24hours
 var k = math.Pi / 180
 
 /***** types *****/
-
-type Julian float64
-
 // TODO Enumにする？
 type Rokuyo string
 
@@ -65,31 +62,31 @@ func NewQreki(julian Julian) Qreki {
 }
 
 /***** funcs *****/
-func ToJulian(t time.Time) Julian {
-	return Julian(2440587.0 + float64(t.UnixMilli())/864e5 - tz)
+func ToJulian(t time.Time) float64 {
+	return 2440587.0 + float64(t.UnixMilli())/864e5 - tz
 }
 
 func calcEclipticLongitude(sl float64, longitude float64) float64 {
 	return longitude * math.Floor(sl/longitude)
 }
 
-func getNishiNibun(julian Julian) (float64, float64, float64) {
+func getNishiNibun(julian float64) (float64, float64, float64) {
 	julianIntegerPart := math.Floor(float64(julian))
 	julianDecimalPart := float64(julian) - float64(julianIntegerPart) + tz
 	nnj := (julianDecimalPart+0.5)/36525.0 + (julianIntegerPart-2451545.0)/36525.0
 	return julianIntegerPart, julianDecimalPart, nnj
 }
 
-func CalcChuki(julian Julian, longitude float64) Julian {
+func CalcChuki(julian float64, longitude float64) float64 {
 	julianIntegerPart, julianDecimalPart, nnj := getNishiNibun(julian)
-	sl := CalcSolarLongitude(Julian(nnj))
+	sl := CalcSolarLongitude(nnj)
 	el := calcEclipticLongitude(sl, longitude)
 
 	dt1 := 0.0
 	dt2 := 1.0
 	for math.Abs(dt1+dt2) > 1/86400.0 {
 		t := (julianDecimalPart+0.5)/36525.0 + (julianIntegerPart-2451545.0)/36525.0
-		sl = CalcSolarLongitude(Julian(t))
+		sl = CalcSolarLongitude(t)
 		ds := sl - el
 		if ds > 180.0 {
 			ds -= 360.0
@@ -107,15 +104,15 @@ func CalcChuki(julian Julian, longitude float64) Julian {
 		}
 	}
 
-	return Julian(julianDecimalPart + julianIntegerPart - tz)
+	return julianDecimalPart + julianIntegerPart - tz
 }
 
 func NormalizeAngle(angle float64) float64 {
 	return angle - 360.0*math.Floor(angle/360.0)
 }
 
-func CalcSolarLongitude(julian Julian) float64 {
-	var t = float64(julian)
+func CalcSolarLongitude(julian float64) float64 {
+	var t = julian
 	var th float64 = 0.0
 	th += 0.0004 * math.Cos(k*NormalizeAngle(31557.0*t+161.0))
 	th += 0.0004 * math.Cos(k*NormalizeAngle(29930.0*t+48.0))
@@ -131,6 +128,7 @@ func CalcSolarLongitude(julian Julian) float64 {
 	th += 0.0018 * math.Cos(k*NormalizeAngle(19.0*t+159.0))
 	th += 0.0020 * math.Cos(k*NormalizeAngle(32964.0*t+158.0))
 	th += 0.0200 * math.Cos(k*NormalizeAngle(71997.1*t+265.1))
+
 	var ang = NormalizeAngle(35999.05*t + 267.52)
 	th = th - 0.0048*t*math.Cos(k*ang)
 	th += 1.9147 * math.Cos(k*ang)

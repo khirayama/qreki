@@ -27,9 +27,9 @@ func TestQreki(t *testing.T) {
 func TestToJulian(t *testing.T) {
 	testcases := []struct {
 		in  time.Time
-		out Julian
+		out float64
 	}{
-		{time.Date(2002, 6, 3, 0, 0, 0, 0, JST), Julian(2452428)},
+		{time.Date(2002, 6, 3, 0, 0, 0, 0, JST), 2452428.0},
 	}
 
 	for _, tc := range testcases {
@@ -64,7 +64,7 @@ func TestNormalizeAngle(t *testing.T) {
 
 func TestCalcSolarLongitude(t *testing.T) {
 	testcases := []struct {
-		in  Julian
+		in  float64
 		out float64
 	}{
 		{2452428.0, 109.95403992318643},
@@ -81,13 +81,13 @@ func TestCalcSolarLongitude(t *testing.T) {
 
 func TestCalcChuki(t *testing.T) {
 	type args struct {
-		julian    Julian
+		julian    float64
 		longitude float64
 	}
 
 	testcases := []struct {
 		in  args
-		out Julian
+		out float64
 	}{
 		{args{2452428.0, 90.0}, 2452354.168240371},
 	}
