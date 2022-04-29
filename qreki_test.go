@@ -47,6 +47,10 @@ func TestNormalizeAngle(t *testing.T) {
 	}{
 		{31557.0*2451545.0 + 161.0, 86.0},
 		{-10993.857868377594 + 303.8119083007812, 109.95403992318643},
+		// FYI https://go.dev/src/math/sin.go
+		// Results may be meaningless for x > 2**49 = 5.6e14.
+		// Golang might give the different value with sin/cos between other languages.
+		// [Go 言語の math.Sin は計算結果がおかしいことがある - Qiita](https://qiita.com/Nabetani/items/2dd5e2351b6d2f8ed53f)
 		// {-10993.857868377594 + 303.8119083007812, 109.95403992318825},
 	}
 
