@@ -68,7 +68,7 @@ func TestCalcSolarLongitude(t *testing.T) {
 		out float64
 	}{
 		{2452428.0, 109.95403992318643},
-		// {2452428.0, 109.95403992318825},
+		// {2452428.0, 109.95403992318825}, // with other languages
 	}
 
 	for _, tc := range testcases {
