@@ -69,6 +69,43 @@ func ToJulian(t time.Time) Julian {
 	return Julian(2440587.0 + float64(t.UnixMilli())/864e5 - tz)
 }
 
+func CalcEclipticLongitude(sl float64, longitude float64) float64 {
+	return longitude * math.Floor(sl/longitude)
+}
+
+func CalcChuki(julian Julian, longitude float64) Julian {
+	j1 := math.Floor(float64(julian))
+	j2 := float64(julian) - float64(j1) + tz
+	j := (j2+0.5)/36525.0 + (j1-2451545.0)/36525.0
+
+	sl := CalcSolarLongitude(Julian(j))
+	el := CalcEclipticLongitude(sl, longitude)
+
+	dt1 := 0.0
+	dt2 := 1.0
+	for math.Abs(dt1+dt2) > 1/86400.0 {
+		t := (j2+0.5)/36525.0 + (j1-2451545.0)/36525.0
+		sl = CalcSolarLongitude(Julian(t))
+		ds := sl - el
+		if ds > 180.0 {
+			ds -= 360.0
+		} else if ds < -180.0 {
+			ds += 360.0
+		}
+		dt1 = math.Floor(ds * 365.2 / 360.0)
+		dt2 = ds*365.2/360.0 - dt1
+
+		j1 = j1 - dt1
+		j2 = j2 - dt2
+		if j2 < 0.0 {
+			j1 -= 1.0
+			j2 += 1.0
+		}
+	}
+
+	return Julian(j2 + j1 - tz)
+}
+
 func NormalizeAngle(angle float64) float64 {
 	return angle - 360.0*math.Floor(angle/360.0)
 }

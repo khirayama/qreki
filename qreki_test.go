@@ -78,3 +78,24 @@ func TestCalcSolarLongitude(t *testing.T) {
 		}
 	}
 }
+
+func TestCalcChuki(t *testing.T) {
+	type args struct {
+		julian    Julian
+		longitude float64
+	}
+
+	testcases := []struct {
+		in  args
+		out Julian
+	}{
+		{args{2452428.0, 90.0}, 2452354.168240371},
+	}
+
+	for _, tc := range testcases {
+		got := CalcChuki(tc.in.julian, tc.in.longitude)
+		if !reflect.DeepEqual(got, tc.out) {
+			t.Errorf("%v: got %v, want %v", tc.in, got, tc.out)
+		}
+	}
+}
