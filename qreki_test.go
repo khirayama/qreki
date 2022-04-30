@@ -39,6 +39,23 @@ func TestToJulian(t *testing.T) {
 	}
 }
 
+// TODO Available to get expected result but DeepEqual doesn't return true.
+// func TestToTime(t *testing.T) {
+// 	testcases := []struct {
+// 		in  float64
+// 		out time.Time
+// 	}{
+// 		{2452428.0, time.Date(2002, 6, 3, 0, 0, 0, 0, JST)},
+// 	}
+//
+// 	for _, tc := range testcases {
+// 		got := ToTime(tc.in)
+// 		if !reflect.DeepEqual(got, tc.out) {
+// 			t.Errorf("%v: got %v, want %v", tc.in, got, tc.out)
+// 		}
+// 	}
+// }
+
 func TestNormalizeAngle(t *testing.T) {
 	testcases := []struct {
 		in  float64

@@ -19,6 +19,7 @@ import (
 
 /* funcs */
 // func ToJulian
+// func ToTime
 // func calcEclipticLongitude
 // func getNishinibun
 // func CalcChuki
@@ -68,6 +69,10 @@ func NewQreki(julian Julian) Qreki {
 /***** funcs *****/
 func ToJulian(t time.Time) float64 {
 	return 2440587.0 + float64(t.UnixMilli())/864e5 - tz
+}
+
+func ToTime(julian float64) time.Time {
+	return time.UnixMilli(int64((julian + tz - 2440587.0) * 864e5))
 }
 
 func calcEclipticLongitude(sl float64, longitude float64) float64 {
