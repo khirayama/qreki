@@ -9,15 +9,14 @@ import (
 
 func TestQreki(t *testing.T) {
 	testcases := []struct {
-		in  string
+		in  time.Time
 		out Qreki
 	}{
-		{"2015-12-31", Qreki{2015, 11, 21, false, "大安", 0.0, 0.0, 0.0, 0}},
+		{time.Date(2002, 6, 3, 0, 0, 0, 0, JST), Qreki{2015, 11, 21, false, "大安", 0.0, 0.0, 0.0, 0}},
 	}
 
 	for _, tc := range testcases {
-		in, _ := time.Parse("2002-06-03", tc.in)
-		got := NewQreki(ToJulian(in))
+		got := NewQreki(ToJulian(tc.in))
 		if !reflect.DeepEqual(got, tc.out) {
 			t.Errorf("%v: got %v, want %v", tc.in, got, tc.out)
 		}
