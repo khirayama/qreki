@@ -98,3 +98,19 @@ func TestCalcChuki(t *testing.T) {
 		}
 	}
 }
+
+func TestCalcNewMoon(t *testing.T) {
+	testcases := []struct {
+		in  float64
+		out float64
+	}{
+		{2452428.0, 2452406.824613828},
+	}
+
+	for _, tc := range testcases {
+		got := CalcNewMoon(tc.in)
+		if !reflect.DeepEqual(got, tc.out) {
+			t.Errorf("%v: got %v, want %v", tc.in, got, tc.out)
+		}
+	}
+}

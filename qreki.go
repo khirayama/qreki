@@ -138,3 +138,52 @@ func CalcSolarLongitude(julian float64) float64 {
 	th = NormalizeAngle(th + ang)
 	return th
 }
+
+func CalcMoonLongitude(julian float64) float64 {
+	// TODO
+	return julian
+}
+
+func CalcNewMoon(julian float64) float64 {
+	count := 1
+	julianIntegerPart, julianDecimalPart, _ := getNishinibun(julian)
+
+	dt1 := 0.0
+	dt2 := 1.0
+	for math.Abs(dt1+dt2) > 1.0/86400.0 {
+		t := (julianDecimalPart+0.5)/36525.0 + (julianIntegerPart-2451545.0)/36525.0
+
+		sl := CalcSolarLongitude(t)
+		ml := CalcMoonLongitude(t)
+		d := ml - sl
+		if count == 1 && d < 0.0 {
+			d = NormalizeAngle(d)
+		} else if sl >= 0 && sl <= 20 && ml >= 300 {
+			d = NormalizeAngle(d)
+			d = 360.0 - d
+		} else if math.Abs(d) > 40 {
+			d = NormalizeAngle(d)
+		}
+		dIntegerPart := math.Floor(d * 29.530589 / 360.0)
+		dDecimalPart := d*29.530589/360.0 - dIntegerPart
+		julianIntegerPart = julianIntegerPart - dIntegerPart
+		julianDecimalPart = julianDecimalPart - dDecimalPart
+		if julianDecimalPart < 0 {
+			julianIntegerPart -= 1.0
+			julianDecimalPart += 1.0
+		}
+
+		if count == 15 && math.Abs(dIntegerPart+dDecimalPart) > (1.0/86400.0) {
+			julianIntegerPart = math.Floor(sl - 26)
+			julianDecimalPart = 0.0
+		} else if count > 30 && math.Abs(dIntegerPart+dDecimalPart) > (1.0/86400.0) {
+			julianIntegerPart = sl
+			julianDecimalPart = 0.0
+			break
+		}
+
+		count += 1
+	}
+
+	return julianDecimalPart + julianIntegerPart - tz
+}
