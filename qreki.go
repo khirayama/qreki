@@ -19,9 +19,13 @@ import (
 
 /* funcs */
 // func ToJulian
+// func calcEclipticLongitude
+// func getNishinibun
 // func CalcChuki
 // func NormalizeAngle
 // func CalcSolarLongitude
+// func CalcMoonLongitude
+// func CalcNewMoon
 
 /***** vars *****/
 var JST, _ = time.LoadLocation("Asia/Tokyo")
