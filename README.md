@@ -5,6 +5,15 @@
 Go言語、Go言語のテスト、Go言語のモジュール作成を学習するため、qrekiをGo言語により再実装を行います。
 また、Conventional Commitsに運用についても学習します。
 
+## Words
+
+- 朔(朔日)   : new moon
+- 冬至       : winter solstice
+- 国際原始時 : TAI
+- 地球時     : TT
+- 太陽黄経   : ecliptic longitude
+- 二至二分   : nishi nibun
+
 ## References
 
 - [Conventional Commits](https://www.conventionalcommits.org/ja/v1.0.0/)
