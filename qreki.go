@@ -70,7 +70,7 @@ func calcEclipticLongitude(sl float64, longitude float64) float64 {
 	return longitude * math.Floor(sl/longitude)
 }
 
-func getNishiNibun(julian float64) (float64, float64, float64) {
+func getNishinibun(julian float64) (float64, float64, float64) {
 	julianIntegerPart := math.Floor(float64(julian))
 	julianDecimalPart := float64(julian) - float64(julianIntegerPart) + tz
 	nnj := (julianDecimalPart+0.5)/36525.0 + (julianIntegerPart-2451545.0)/36525.0
@@ -78,7 +78,7 @@ func getNishiNibun(julian float64) (float64, float64, float64) {
 }
 
 func CalcChuki(julian float64, longitude float64) float64 {
-	julianIntegerPart, julianDecimalPart, nnj := getNishiNibun(julian)
+	julianIntegerPart, julianDecimalPart, nnj := getNishinibun(julian)
 	sl := CalcSolarLongitude(nnj)
 	el := calcEclipticLongitude(sl, longitude)
 
