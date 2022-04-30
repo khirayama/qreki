@@ -13,7 +13,6 @@ import (
 // var k
 
 /* types */
-// type Rokuyo
 // type Qreki
 // func NewQreki
 
@@ -36,32 +35,110 @@ var tz = timezoneOffsetOfJapan / minutesOf24hours
 var k = math.Pi / 180
 
 /***** types *****/
-// TODO Enumにする？
-type Rokuyo string
-
 type Qreki struct {
-	Year     int
-	Month    int
-	Day      int
-	Uruu     bool
-	Rokuyo   Rokuyo
-	Mage     float64
-	Magenoon float64
-	Illumi   float64
-	Mphase   int
+	Year   int
+	Month  int
+	Day    int
+	IsLeap bool
+	Rokuyo string
 }
 
-func NewQreki(julian Julian) Qreki {
+type M struct {
+	month  int
+	isLeap bool
+	j      float64
+}
+
+func NewQreki(julian float64) Qreki {
+	var chuki [4]float64
+	var m [5]M
+	var newMoon [5]float64
+
+	chuki[0] = CalcChuki(julian, 90)
+	_, _, nnj := getNishinibun(julian)
+	sl := CalcSolarLongitude(nnj)
+	el := calcEclipticLongitude(sl, 90)
+
+	m[0].month = int(math.Floor(el/30.0)) + 2
+	for i := 1; i < 4; i++ {
+		chuki[i] = CalcChuki(chuki[i-1]+32, 30)
+	}
+
+	newMoon[0] = CalcNewMoon(chuki[0])
+	for i := 1; i < 5; i++ {
+		newMoon[i] = CalcNewMoon(newMoon[i-1] + 30.0)
+		if math.Abs(math.Floor(newMoon[i-1])-math.Floor(newMoon[i])) <= 26 {
+			newMoon[i] = CalcNewMoon(newMoon[i-1] + 35.0)
+		}
+	}
+
+	if math.Floor(newMoon[1]) <= math.Floor(chuki[0]) {
+		for i := 0; i < 4; i++ {
+			newMoon[i] = newMoon[i+1]
+		}
+		newMoon[4] = CalcNewMoon(newMoon[3] + 35.0)
+	} else if math.Floor(newMoon[0]) > math.Floor(newMoon[0]) {
+		for i := 4; i > 0; i-- {
+			newMoon[i] = newMoon[i-1]
+		}
+		newMoon[0] = CalcNewMoon(newMoon[0] - 27.0)
+	}
+
+	isLeapMonth := math.Floor(newMoon[4]) <= math.Floor(chuki[3])
+	m[0].isLeap = false
+	m[0].j = math.Floor(newMoon[0])
+	for i := 1; i < 5; i++ {
+		if isLeapMonth && i > 1 {
+			if chuki[i-1] <= math.Floor(newMoon[i-1]) || chuki[i-1] >= math.Floor(newMoon[i]) {
+				m[i-1].month = m[i-2].month
+				m[i-1].isLeap = true
+				m[i-1].j = math.Floor(newMoon[i-1])
+				isLeapMonth = false
+			}
+		}
+		m[i].month = m[i-1].month + 1
+		if m[i].month > 12 {
+			m[i].month -= 12
+		}
+		m[i].j = math.Floor(newMoon[i])
+		m[i].isLeap = false
+	}
+
+	flag := 0
+	index := 0
+	for index < 5 {
+		if math.Floor(julian) < math.Floor(m[index].j) {
+			flag = 1
+			break
+		} else if math.Floor(julian) == math.Floor(m[index].j) {
+			flag = 2
+			break
+		}
+		index++
+	}
+	if flag == 0 || flag == 1 {
+		index--
+	}
+
+	month := m[index].month
+	day := int(math.Floor(julian)) - int(math.Floor(m[index].j)) + 1
+	isLeap := m[index].isLeap
+
+	t := ToTime(julian)
+	year := t.Year()
+	if month > 9 && month > int(t.Month()) {
+		year--
+	}
+
+	rokuyoNames := [...]string{"先勝", "友引", "先負", "仏滅", "大安", "赤口"}
+	rokuyo := rokuyoNames[(month+day-2)%6]
+
 	qreki := Qreki{
-		Year:     2015,
-		Month:    11,
-		Day:      21,
-		Uruu:     false,
-		Rokuyo:   "大安",
-		Mage:     0.0,
-		Magenoon: 0.0,
-		Illumi:   0.0,
-		Mphase:   0,
+		Year:   year,
+		Month:  month,
+		Day:    day,
+		IsLeap: isLeap,
+		Rokuyo: rokuyo,
 	}
 	return qreki
 }

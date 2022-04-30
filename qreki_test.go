@@ -12,7 +12,7 @@ func TestQreki(t *testing.T) {
 		in  time.Time
 		out Qreki
 	}{
-		{time.Date(2002, 6, 3, 0, 0, 0, 0, JST), Qreki{2015, 11, 21, false, "大安", 0.0, 0.0, 0.0, 0}},
+		{time.Date(2002, 6, 3, 0, 0, 0, 0, JST), Qreki{2002, 4, 23, false, "友引"}},
 	}
 
 	for _, tc := range testcases {
