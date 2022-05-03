@@ -170,25 +170,26 @@ func CalcChuki(julian float64, longitude float64) float64 {
 
 	dt1 := 0.0
 	dt2 := 1.0
-	for math.Abs(dt1+dt2) > 1/86400.0 {
-		t := (julianDecimalPart+0.5)/36525.0 + (julianIntegerPart-2451545.0)/36525.0
-		sl = CalcSolarLongitude(t)
-		ds := sl - el
-		if ds > 180.0 {
-			ds -= 360.0
-		} else if ds < -180.0 {
-			ds += 360.0
-		}
-		dt1 = math.Floor(ds * 365.2 / 360.0)
-		dt2 = ds*365.2/360.0 - dt1
-
-		julianIntegerPart = julianIntegerPart - dt1
-		julianDecimalPart = julianDecimalPart - dt2
-		if julianDecimalPart < 0.0 {
-			julianIntegerPart -= 1.0
-			julianDecimalPart += 1.0
-		}
+	/* FYI I'm not sure we need this or not */
+	// for math.Abs(dt1+dt2) > 1/86400.0 {
+	t := (julianDecimalPart+0.5)/36525.0 + (julianIntegerPart-2451545.0)/36525.0
+	sl = CalcSolarLongitude(t)
+	ds := sl - el
+	if ds > 180.0 {
+		ds -= 360.0
+	} else if ds < -180.0 {
+		ds += 360.0
 	}
+	dt1 = math.Floor(ds * 365.2 / 360.0)
+	dt2 = ds*365.2/360.0 - dt1
+
+	julianIntegerPart = julianIntegerPart - dt1
+	julianDecimalPart = julianDecimalPart - dt2
+	if julianDecimalPart < 0.0 {
+		julianIntegerPart -= 1.0
+		julianDecimalPart += 1.0
+	}
+	// }
 
 	return julianDecimalPart + julianIntegerPart - tz
 }
