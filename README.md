@@ -28,3 +28,4 @@ Go言語、Go言語のテスト、Go言語のモジュール作成を学習す�
 - [冬至 - Wikipedia](https://ja.wikipedia.org/wiki/%E5%86%AC%E8%87%B3)
 - [国際原子時 - Wikipedia](https://ja.wikipedia.org/wiki/%E5%9B%BD%E9%9A%9B%E5%8E%9F%E5%AD%90%E6%99%82)
 - [地球時 - Wikipedia](https://ja.wikipedia.org/wiki/%E5%9C%B0%E7%90%83%E6%99%82)
+- [旧暦カレンダー - 高精度計算サイト](https://keisan.casio.jp/exec/system/1189993438)
