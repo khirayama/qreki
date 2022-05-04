@@ -120,7 +120,8 @@ func TestCalcChuki(t *testing.T) {
 		in  args
 		out float64
 	}{
-		{args{2452428.0, 90.0}, 2452354.168240371},
+		// {args{2452428.0, 90.0}, 2452354.168240371},
+		{args{2463952.0, 90.0}, 2463861.675270711},
 	}
 
 	for _, tc := range testcases {
