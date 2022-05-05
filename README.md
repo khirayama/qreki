@@ -29,3 +29,4 @@ Go言語、Go言語のテスト、Go言語のモジュール作成を学習す�
 - [国際原子時 - Wikipedia](https://ja.wikipedia.org/wiki/%E5%9B%BD%E9%9A%9B%E5%8E%9F%E5%AD%90%E6%99%82)
 - [地球時 - Wikipedia](https://ja.wikipedia.org/wiki/%E5%9C%B0%E7%90%83%E6%99%82)
 - [旧暦カレンダー - 高精度計算サイト](https://keisan.casio.jp/exec/system/1189993438)
+- [旧暦データファイル](https://wiki.suikawiki.org/n/%E6%97%A7%E6%9A%A6%E3%83%87%E3%83%BC%E3%82%BF%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB#header-section-%E6%9C%80%E6%96%B0%E7%89%88%E3%83%87%E3%83%BC%E3%82%BF%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB)
